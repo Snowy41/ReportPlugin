@@ -1,0 +1,6 @@
+name: reportCommand
+version: one
+main: de.tobi.main.Main
+commands:
+  report:
+    description: report an Enemy
