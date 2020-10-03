@@ -1,11 +1,13 @@
 package de.tobi.commands;
 
+import de.tobi.util.WriteFile;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.libs.org.ibex.nestedvm.util.Seekable;
 import org.bukkit.entity.Player;
 import org.yaml.snakeyaml.Yaml;
 
@@ -42,12 +44,33 @@ public class ReportCommand implements CommandExecutor {
                         Date today1 = Calendar.getInstance().getTime();
                         DateFormat tm = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                         String gettime = tm.format(today1);
-                        Writer fileWriter = new FileWriter(player1.getName() + " - " + UUID1 + ".txt");
-                        fileWriter.write("[" + gettime + "] Reported by: " +  player.getName() + "| Reason: " + reason);
-                        Writer fileWriter1 = new FileWriter(player.getName() + " - " + UUID2 + ".txt");
-                        fileWriter1.write("[" + gettime + "] Reported Player: " + player1.getName() +  "| Reason: " + reason);
-                        fileWriter.close();
-                        fileWriter1.close();
+                        File fileReporter1 = new File("C:\\Users\\Tobi\\Desktop\\Server\\plugins\\reports", player.getName() + "-" + UUID2 + ".txt");
+                        File fileReported2 = new File("C:\\Users\\Tobi\\Desktop\\Server\\plugins\\reports", player1.getName() + "-" + UUID1 + ".txt");
+                        if(fileReporter1.exists()) {
+                            WriteFile writeFile1 = new WriteFile("C:\\Users\\Tobi\\Desktop\\Server\\plugins\\reports" + player.getName() + "-" + UUID2, true);
+                            writeFile1.writeToFile("[" + gettime + "] Reported Player: " + player1.getName() +  "| Reason: " + reason);
+                        }else {
+                            fileReporter1.createNewFile();
+                            WriteFile writeFile1 = new WriteFile("C:\\Users\\Tobi\\Desktop\\Server\\plugins\\reports" + player.getName() + "-" + UUID2, false);
+                            writeFile1.writeToFile("[" + gettime + "] Reported Player: " + player1.getName() +  "| Reason: " + reason);
+                        }
+                        if(fileReported2.exists()){
+                            WriteFile writeFile2 = new WriteFile("C:\\Users\\Tobi\\Desktop\\Server\\plugins\\reports" + player1.getName() + "-" + UUID1, true);
+                            writeFile2.writeToFile("[" + gettime + "] Reported by: " +  player1.getName() + "| Reason: " + reason);
+                            }else{
+                            fileReported2.createNewFile();
+                            WriteFile writeFile2 = new WriteFile("C:\\Users\\Tobi\\Desktop\\Server\\plugins\\reports" + player1.getName() + "-" + UUID1, false);
+                            writeFile2.writeToFile("[" + gettime + "] Reported by: " +  player1.getName() + "| Reason: " + reason);
+                        }
+
+
+
+
+
+
+
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         player.sendMessage("Your report could not be received.");
